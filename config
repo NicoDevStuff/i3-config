@@ -1,0 +1,190 @@
+font pango:JetBrains Mono 11
+default_border pixel 2
+smart_borders on
+gaps inner 12
+gaps outer 1
+
+# colors
+client.focused #458588 #282828 #ebdbb2 #458588 #458588
+client.focused_inactive #3c3836 #282828 #ebdbb2 #3c3836 #3c3836
+set $path ~/.config/i3
+set $terminal kitty
+set $browser brave
+
+# Autostarts
+set $e exec --no-startup-id
+$e nitrogen --restore
+$e dex --autostart --environment i3
+$e xss-lock --transfer-sleep-lock -- i3lock --nofork
+$e nm-applet
+$e ~/.config/polybar/launch_polybar.sh
+$e ~/.screenlayout/main.sh 
+$e nm-applet 
+$e volumeicon 
+# for laptop users only!
+# $e cbatticon 
+$e conky -c ~/.config/conky/i3/conky.conf
+$e udiskie 
+$e xclip 
+$e i3-msg 'workspace 9; exec /usr/bin/easyeffects'
+$e i3-msg 'workspace 9; exec /usr/bin/solaar '
+$e i3-autolayout autolayout
+
+set $refresh_i3status killall -SIGUSR1 i3status
+set $b bindsym
+
+
+set $up k
+set $down j
+set $left h
+set $right l
+set $Mod Mod4
+floating_modifier $Mod
+tiling_drag modifier titlebar
+
+# my own keybinds 
+$b $Mod+Return exec $terminal
+$b $Mod+Shift+Return exec rofi -show drun
+$b $Mod+c exec rofi -show calc
+$b $Mod+Shift+e exec emoji-picker
+$b $Mod+s exec signal-desktop 
+$b $Mod+b exec $browser
+$b $Mod+e exec thunderbird
+$b $Mod+f exec pcmanfm
+$b $Mod+q kill
+$b $Mod+Shift+f floating toggle
+$b $Mod+Shift+B $e ~/.config/polybar/launch_polybar.sh
+$b $Mod+Shift+c reload
+$b $Mod+Shift+r restart
+$b $Mod+Shift+x exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# media keys
+$b XF86AudioRaiseVolume $e $path/volume.sh up && $refresh_i3status
+$b XF86AudioLowerVolume $e $path/volume.sh down && $refresh_i3status
+$b XF86AudioMute $e $path/volume.sh mute && $refresh_i3status
+$b XF86AudioMicMute $e pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+$b XF86AudioPlay $e playerctl play-pause
+$b XF86AudioPrev $e playerctl previous
+$b XF86AudioNext $e playerctl next
+$b XF86MonBrightnessUp $e brightnessctl set +5%
+$b XF86MonBrightnessDown $e brightnessctl set 5%-
+# screenshot
+$b Print $e ksnip
+# German "umlaute": ä, ö, ü, ß and key layout switching
+$b --release $Mod+Shift+space $e $path/german_umlaute.sh
+$b --release $Mod+Mod1+k $e $path/switchlayout.sh
+
+# change focus
+$b $Mod+$left focus left
+$b $Mod+$down focus down
+$b $Mod+$up focus up
+$b $Mod+$right focus right
+
+# move focused window
+$b $Mod+Shift+$left move left
+$b $Mod+Shift+$down move down
+$b $Mod+Shift+$up move up
+$b $Mod+Shift+$right move right
+
+# resize focused window (quicker then using modes)
+set $sfac 5
+bindsym $mod+Ctrl+$right resize shrink width $sfac px or $sfac ppt
+bindsym $mod+Ctrl+$up resize grow height $sfac px or $sfac ppt
+bindsym $mod+Ctrl+$down resize shrink height $sfac px or $sfac ppt
+bindsym $mod+Ctrl+$left resize grow width $sfac px or $sfac ppt
+
+# split in horizontal orientation
+$b $Mod+Mod1+h split h
+
+# split in vertical orientation
+$b $Mod+Mod1+j split v
+
+# enter fullscreen mode for the focused container
+$b $Mod+Control+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+$b $Mod+Shift+s layout stacking
+$b $Mod+Shift+w layout tabbed
+$b $Mod+Control+e layout toggle split
+
+# change focus between tiling / floating windows
+$b $Mod+space focus mode_toggle
+
+# focus the parent container
+$b $Mod+a focus parent
+
+# focus the child container
+#$b $Mod+d focus child
+
+# move the currently focused window to the scratchpad
+$b $Mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+# $b $Mod+minus scratchpad show
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch to workspace
+$b $Mod+1 workspace number $ws1
+$b $Mod+2 workspace number $ws2
+$b $Mod+3 workspace number $ws3
+$b $Mod+4 workspace number $ws4
+$b $Mod+5 workspace number $ws5
+$b $Mod+6 workspace number $ws6
+$b $Mod+7 workspace number $ws7
+$b $Mod+8 workspace number $ws8
+$b $Mod+9 workspace number $ws9
+$b $Mod+0 workspace number $ws10
+
+# move focused container to workspace
+$b $Mod+Shift+1 move container to workspace number $ws1
+$b $Mod+Shift+2 move container to workspace number $ws2
+$b $Mod+Shift+3 move container to workspace number $ws3
+$b $Mod+Shift+4 move container to workspace number $ws4
+$b $Mod+Shift+5 move container to workspace number $ws5
+$b $Mod+Shift+6 move container to workspace number $ws6
+$b $Mod+Shift+7 move container to workspace number $ws7
+$b $Mod+Shift+8 move container to workspace number $ws8
+$b $Mod+Shift+9 move container to workspace number $ws9
+$b $Mod+Shift+0 move container to workspace number $ws10
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        $b $left       resize shrink width $sfac px or $sfac ppt
+        $b $down       resize grow height $sfac px or $sfac ppt
+        $b $up         resize shrink height $sfac px or $sfac ppt
+        $b $right      resize grow width $sfac px or $sfac ppt
+
+        # same bindings, but for the arrow keys
+        $b Left        resize shrink width $sfac px or $sfac ppt
+        $b Down        resize grow height $sfac px or $sfac ppt
+        $b Up          resize shrink height $sfac px or $sfac ppt
+        $b Right       resize grow width $sfac px or $sfac ppt
+
+        # back to normal: Enter or Escape or $Mod+r
+        $b Return mode "default"
+        $b Escape mode "default"
+        $b $Mod+r mode "default"
+}
+
+$b $Mod+r mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+# bar {
+#         # status_command i3status  
+#         # height 20
+#         # position top
+#         # tray_output primary
+# }
